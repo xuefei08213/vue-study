@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue实例介绍</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p>{{ freezeObj.foo }}</p>
+      <!-- this will no longer update `foo`! -->
+      <button v-on:click="freezeObj.foo = 'baz'">Change it</button>
+
+      <p>{{ name }}</p>
+      <!-- this will no longer update `foo`! -->
+      <button v-on:click="name = 'zuozuo'">Change name</button>
+    </div>
+  </body>
+  <script>
+    var obj = {
+      foo: "bar",
+    };
+
+    Object.freeze(obj);
+
+    new Vue({
+      el: "#app",
+      data: {
+        name: 'xuefei',
+        freezeObj: obj
+      }
+    });
+  </script>
+</html>
