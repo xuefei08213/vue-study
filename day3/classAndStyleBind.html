@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+      .default {
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
+      }
+
+      .active {
+        display: block;
+      }
+
+      .scale {
+        width: 50px;
+        height: 50px;
+      }
+
+      .text-danger {
+        background-color: blueviolet;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!--通过一个boolean值来控制class是否存在-->
+      <div
+        class="default"
+        :class="{scale:isActive,'text-danger': hasError}"
+      ></div>
+      <button @click="toggle">切换</button>
+
+      <!--在class比较多的情况下，可以通过对象来表示-->
+      <div class="default" :class="classObject">通过对象来表示class</div>
+      <button @click="toggleByClassObject">切换</button>
+
+      <!--通过计算属性来计算class对象-->
+      <div class="default" :class="classObjectByCompute">通过计算属性来计算class对象</div>
+      <button @click="toggleClassObjectByCompute">切换</button>
+    </div>
+  </body>
+  <script>
+    var vm = new Vue({
+      el: "#app",
+      data: {
+        isActive: true,
+        hasError: true,
+        error: false,
+        classObject: {
+          active: true,
+          "text-danger": true,
+        },
+      },
+      methods: {
+        toggle: function () {
+          this.isActive = !this.isActive;
+          this.hasError = !this.hasError;
+        },
+        toggleByClassObject: function () {
+          this.classObject.active = !this.classObject.active;
+          this.classObject["text-danger"] = !this.classObject["text-danger"];
+        },
+        toggleClassObjectByCompute: function(){
+            this.isActive = !this.isActive
+        }
+      },
+      computed: {
+        classObjectByCompute: function () {
+          return {
+            active: this.isActive && !this.error,
+            "text-danger": this.error && this.error.type === "fatal",
+          };
+        },
+      },
+    });
+  </script>
+</html>
