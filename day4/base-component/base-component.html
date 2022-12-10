@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <blog-post
+        v-for="post in posts"
+        :title="post.title"
+        :key="post.id"
+      ></blog-post>
+
+      <div :style="{ fontSize: postFontSize + 'em' }">
+        <blog-post-prop-obj
+          v-for="post in posts"
+          :post="post"
+          :key="post.id"
+          v-on:enlarge-text="postFontSize += $event"
+        ></blog-post-prop-obj>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  // prop将父组件参数传递给子主键
+  // 子组件想传递参数给父组件时，可以通过$emit方法来实现，该方法的参数为父组件中v-on中指定的事件
+  // 在使用$emit时可以传递值给父组件
+  // props接收单个属性，但是如果属性太多，props属性也会很多，会带来不便，这时候就可以通过props接收对象来解决
+  Vue.component("blog-post", {
+    props: ["title"],
+    template: "<h3>{{ title }}</h3>",
+  });
+
+  Vue.component("blog-post-prop-obj", {
+    props: ["post"],
+    template: `<div class="blog-post">
+      <h3>{{ post.title }}</h3>
+      <button v-on:click="$emit('enlarge-text',0.1)">
+        Enlarge text
+        </button>
+      <div v-html="post.content"></div>
+    </div>`,
+  });
+
+  new Vue({
+    el: "#app",
+    data: {
+      posts: [
+        { id: 1, title: "My journey with Vue", content: "vue content 1" },
+        { id: 2, title: "Blogging with Vue", content: "vue content 2" },
+        { id: 3, title: "Why Vue is so fun", content: "vue content 3" },
+      ],
+      postFontSize: 1,
+    },
+  });
+</script>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <button v-on:click="changeTab('blog-home')">Home</button>
+      <button v-on:click="changeTab('blog-posts')">post</button>
+      <button v-on:click="changeTab('blog-archive')">Archive</button>
+      <keep-alive>
+        <component v-bind:is="currentTabComponent"></component>
+      </keep-alive>
+    </div>
+  </body>
+</html>
+<script>
+  Vue.component("blog-home", {
+    template: `
+    <div class="demo-alert-box">
+      Home component
+      <button v-on:click='counter += 1'>递增</button>
+      <p>点击次数为{{counter}}</p>
+    </div>
+  `,
+    data: function () {
+      return {
+        counter: 0,
+      };
+    },
+  });
+
+  Vue.component("blog-posts", {
+    template: `
+    <div class="demo-alert-box">
+      post component
+    </div>
+  `,
+  });
+
+  Vue.component("blog-archive", {
+    template: `
+    <div class="demo-alert-box">
+        archive component
+    </div>
+  `,
+  });
+
+  new Vue({
+    el: "#app",
+    data: {
+      currentTabComponent: "blog-home",
+    },
+    methods: {
+      changeTab: function (tabName) {
+        this.currentTabComponent = tabName;
+      },
+    },
+  });
+</script>

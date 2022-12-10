@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p>使用v-bind+v-on的结合</p>
+      <custom-input
+        v-bind:value="searchText"
+        v-on:input="searchText = $event"
+      ></custom-input>
+      <p>使用v-bind+v-on的结合的结果{{searchText}}</p>
+
+      <p>使用v-model的结合</p>
+      <custom-input v-model="searchText"></custom-input>
+      <p>使用v-model的结果{{searchText}}</p>
+    </div>
+  </body>
+</html>
+<script>
+  Vue.component("custom-input", {
+    props: ["value"],
+    template: `
+    <input
+      v-bind:value="value"
+      v-on:input="$emit('input', $event.target.value)"
+    >
+  `,
+  });
+
+  new Vue({
+    el: "#app",
+    data: {
+      searchText: "",
+    },
+  });
+</script>
+
+<!--
+
+    写法一
+    <input v-model="searchText">
+
+    写法二
+    <input
+  v-bind:value="searchText"
+  v-on:input="searchText = $event.target.value"
+>
+
+写法一和写法二一样的效果，所以想在组件上使用v-model就得利用上面的思路来实现
+-->
