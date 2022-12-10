@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- only call `vm.submit()` when the `key` is `Enter` -->
+      <p>只有在敲击enter时才会触发事件</p>
+      <input v-on:keyup.enter="submit" />
+
+      <p>只有在敲击page-down时才会触发事件</p>
+      <input v-on:keyup.page-down="onPageDown" />
+
+      <p>只有在敲击tab时才会触发事件</p>
+      <input v-on:keyup.tab="keyboadClick('keyboadClick tab')" />
+
+      <p>只有在敲击delete时才会触发事件</p>
+      <input v-on:keyup.delete="keyboadClick('keyboadClick delete')" />
+
+      <p>只有在敲击up时才会触发事件</p>
+      <input v-on:keyup.up="keyboadClick('keyboadClick up')" />
+
+      <p>只有在敲击down时才会触发事件</p>
+      <input v-on:keyup.down="keyboadClick('keyboadClick down')" />
+
+      <p>只有在敲击left时才会触发事件</p>
+      <input v-on:keyup.left="keyboadClick('keyboadClick left')" />
+
+      <p>只有在敲击right时才会触发事件</p>
+      <input v-on:keyup.right="keyboadClick('keyboadClick right')" />
+
+      <p>只有在敲击ctrl时才会触发事件</p>
+      <input v-on:keyup.ctrl="keyboadClick('keyboadClick ctrl')" />
+      
+    </div>
+  </body>
+</html>
+<script>
+  new Vue({
+    el: "#app",
+    methods: {
+      submit: function () {
+        alert("敲击了enter键");
+      },
+      onPageDown: function () {
+        alert("敲击了page-down键");
+      },
+      keyboadClick: function (key) {
+        alert(key);
+      },
+    },
+  });
+</script>

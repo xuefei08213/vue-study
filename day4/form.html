@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <label for="name">姓名</label>
+      <input
+        id="name"
+        type="text"
+        v-model="formData.name"
+        placeholder="edit me"
+      />
+      <br />
+
+      <label for="address">地址</label>
+      <textarea
+        id="address"
+        v-model="formData.address"
+        placeholder="add multiple lines"
+      ></textarea>
+      <br />
+
+      <label>兴趣爱好</label>
+      <input
+        type="checkbox"
+        id="basketball"
+        value="basketball"
+        v-model="formData.hobby"
+      />
+      <label for="basketball">打篮球</label>
+      <input
+        type="checkbox"
+        id="football"
+        value="football"
+        v-model="formData.hobby"
+      />
+      <label for="football">踢足球</label>
+      <br />
+
+      <label>性别</label>
+      <input type="radio" id="male" value="male" v-model="formData.sex" />
+      <label for="male">男</label>
+
+      <input type="radio" id="female" value="female" v-model="formData.sex" />
+      <label for="female">女</label>
+      <br />
+
+      <label>成绩</label>
+      <select v-model="formData.grade">
+        <option disabled value="">Please select one</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      <span>Selected: {{ formData.grade }}</span>
+
+      <br />
+
+      <label>课程</label>
+      <select v-model="formData.course" multiple>
+        <option v-for="course in allCourse" v-bind:value="course.value">{{course.text}}</option>
+      </select>
+      <span>SelectedCourse: {{ formData.course }}</span>
+    </div>
+  </body>
+</html>
+<script>
+  new Vue({
+    el: "#app",
+    data: {
+      allCourse: [
+        { text: "语文", value: "chinese" },
+        { text: "数学", value: "math" },
+        { text: "英语", value: "English" },
+      ],
+      formData: {
+        name: "xuefei",
+        address: "江苏省南京市浦口区东南大学",
+        hobby: [],
+        sex: "",
+        grade: "",
+        course: [],
+      },
+    },
+  });
+</script>

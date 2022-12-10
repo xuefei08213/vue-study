@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      .stopModifier {
+        background-color: brown;
+      }
+
+      .outerDiv {
+        width: 100px;
+        height: 100px;
+        text-align: center;
+      }
+
+      .withoutStopModifier {
+        background-color: red;
+      }
+
+      .withStopModifier {
+        background-color: blueviolet;
+      }
+
+
+      .outer{
+        width: 100px;
+        height: 100px;
+        border: 1px solid red;
+      }
+
+      .inner1{
+        width: 90px;
+        height: 90px;
+        border: 1px solid green;
+      }
+
+      .inner2{
+        width: 80px;
+        height: 80px;
+        border: 1px solid pink;
+      }
+
+      .withScroll{
+        overflow: auto;
+      }
+
+      .innerForScroll{
+        width: 100px;
+        height: 300px;
+      }
+    </style>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="example-1">021.58</div>
+
+    <div id="example-2">
+      <!-- `greet` is the name of a method defined below -->
+      <button v-on:click="greet">Greet</button>
+    </div>
+
+    <div id="example-3">
+      <button v-on:click="say('hi',$event)">Say hi</button>
+      <button v-on:click="say('what',$event)">Say what</button>
+    </div>
+
+    <section id="example-4">
+      <div>
+        <header>stop修饰符</header>
+        <div v-on:click="clickOuterDiv" class="outerDiv withoutStopModifier">
+          <button v-on:click="clickInnerButton">
+            没有stop修饰符的内部按钮
+          </button>
+          <button v-on:click.stop="clickInnerButton">
+            具有stop修饰符的内部按钮
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <header>prevent修饰符</header>
+        <input
+          type="checkbox"
+          v-model="selected"
+          id="checkboxWithoutPrevent"
+          v-on:click=""
+        />
+        <label for="checkboxWithoutPrevent"
+          >没有prevent修饰符的checkbox{{selected}}</label
+        >
+
+        <input
+          type="checkbox"
+          v-model="checkboxWithPreventSelected"
+          id="checkboxWithPrevent"
+          v-on:click.prevent=""
+        />
+        <label for="checkboxWithPrevent"
+          >有prevent修饰符的checkbox{{checkboxWithPreventSelected}}</label
+        >
+      </div>
+
+      <div>
+        <header>once修饰符</header>
+        <button v-on:click.once="counter += 1">点击事件添加了once修饰符，事件只能触发一次</button>
+        <p>The button above has been clicked {{ counter }} times.</p>
+      </div>
+
+      <div>
+        <header>capture修饰符</header>
+        <div class="outer" v-on:click.capture="captureClick('outer')">
+          <div class="inner1" v-on:click.capture="captureClick('inner1')">
+            <div class="inner2" v-on:click.capture="captureClick('inner2')">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <header>self修饰符,只有事件的target是元素本身时才会触发事件，事件冒泡是不会触发的</header>
+        <div class="outer" v-on:click="captureClick('outer')">
+          <div class="inner1" v-on:click.self="captureClick('inner1')">
+            <div class="inner2" v-on:click="captureClick('inner2')">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <header>self修饰符,只有事件的target是元素本身时才会触发事件，事件冒泡是不会触发的</header>
+        <div class="outer" v-on:click="captureClick('outer')">
+          <div class="inner1" v-on:click.self="captureClick('inner1')">
+            <div class="inner2" v-on:click="captureClick('inner2')">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <header>passive修饰符</header>
+        <div class="outer withScroll" v-on:scroll="scroll('没有passive修饰符的scro1l事件')">
+          <div class="innerForScroll">
+            没有passive修饰符的scro1l事件
+          </div>
+        </div>
+
+        <div class="outer withScroll" v-on:scroll.passive="scroll('使用passive修饰符的scro1l事件')">
+          <div class="innerForScroll">
+            使用passive修饰符的scroll事件
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </body>
+
+  <script>
+    new Vue({
+      el: "#example-1",
+      data: {
+        counter: 0,
+      },
+    });
+
+    var example2 = new Vue({
+      el: "#example-2",
+      data: {
+        name: "Vue.js",
+      },
+      // define methods under the `methods` object
+      methods: {
+        greet: function (event) {
+          // `this` inside methods points to the Vue instance
+          alert("Hello " + this.name + "!");
+          // `event` is the native DOM event
+          if (event) {
+            alert(event.target.tagName);
+          }
+        },
+      },
+    });
+
+    new Vue({
+      el: "#example-3",
+      methods: {
+        say: function (message, event) {
+          alert(message);
+          if (event) {
+            alert(event.target.tagName);
+          }
+        },
+      },
+    });
+
+    new Vue({
+      el: "#example-4",
+      data: {
+        selected: true,
+        checkboxWithPreventSelected: false,
+        counter: 0,
+      },
+      methods: {
+        clickOuterDiv: function () {
+          alert("点击外部DIV");
+        },
+        clickInnerButton: function (event) {
+          if (event) {
+            alert(event.target.innerHTML);
+          }
+        },
+        captureClick:function(message){
+          alert(message)
+        },
+        scroll:function(message){
+          alert(message)
+        }
+      },
+    });
+  </script>
+</html>
