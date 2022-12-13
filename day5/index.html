@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+      .btn {
+        width: 100px;
+        height: 50px;
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <blog-post
+        class="customClass"
+        style="color: red"
+        @click="clickDiv"
+        title="通过prop传递为定义的属性；传递class时会进行合并，传递style时相同属性的css会被覆盖"
+      ></blog-post>
+
+      <my-button data-status="codingNinjas" v-on:click="onClick"></my-button>
+      <p>删除操作执行了{{count}}次</p>
+    </div>
+  </body>
+</html>
+<script>
+  Vue.component("blog-post", {
+    props: ["title"],
+    template: "<h3 style='color:green;font-size:20px'>{{ title }}</h3>",
+    methods: {
+      clickDiv: function () {
+        alert("div");
+      },
+    },
+  });
+
+  Vue.component("MyButton", {
+    template: `
+    <div>
+        <button class="btn">删除</button>
+        <p>该操作不可撤回</p>
+    </div>
+        `,
+    methods: {
+      onClick: function () {
+        alert("onClick");
+      },
+    },
+  });
+
+  new Vue({
+    el: "#app",
+    data: {
+      count: 0,
+    },
+    methods: {
+      clickDiv: function () {
+        alert("div");
+      },
+      onClick: function () {
+        count++;
+      },
+    },
+  });
+</script>
