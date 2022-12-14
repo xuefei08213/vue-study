@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <navigation-link :url="url">
+        <span class="fa fa-user"></span>
+            Your Profile
+      </navigation-link>
+
+      <br>
+      <navigation-link v-bind:url="url">
+        Logged in as {{ user.name }}
+      </navigation-link>
+
+      <br>
+      <navigation-link v-bind:url="url">
+       
+      </navigation-link>
+
+      <br>
+      <custom-container>
+        <template v-slot:header>
+            <h1>Here might be a page title</h1>
+        </template>
+        <template v-slot:default>
+            <h1>Here might be a page main</h1>
+        </template>
+        <template v-slot:footer>
+            <h1>Here might be a page footer</h1>
+        </template>
+      </custom-container>
+    </div>
+  </body>
+</html>
+<script>
+  Vue.component("navigation-link", {
+    props: ["url"],
+    template: `
+        <a
+            v-bind:href="url"
+            class="nav-link"
+        >
+            <slot>默认值</slot>
+        </a>
+        `,
+  });
+
+  Vue.component("custom-container", {
+    template: `
+    <div class="container">
+        <header>
+            <!-- We want header content here -->
+            <slot name='header'></slot>
+        </header>
+        <main>
+            <!-- We want main content here -->
+            <slot></slot>
+        </main>
+        <footer>
+            <!-- We want footer content here -->
+            <slot name='footer'></slot>
+        </footer>
+    </div>
+        `,
+  });
+
+  new Vue({
+    el: "#app",
+    data: {
+      url: "http://www.baidu.com",
+      user:{
+        name:'coder-ladder'
+      }
+    },
+  });
+</script>
