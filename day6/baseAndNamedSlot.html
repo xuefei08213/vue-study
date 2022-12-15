@@ -56,20 +56,20 @@
 
   Vue.component("custom-container", {
     template: `
-    <div class="container">
-        <header>
-            <!-- We want header content here -->
-            <slot name='header'></slot>
-        </header>
-        <main>
-            <!-- We want main content here -->
-            <slot></slot>
-        </main>
-        <footer>
-            <!-- We want footer content here -->
-            <slot name='footer'></slot>
-        </footer>
-    </div>
+        <div class="container">
+            <header>
+                <!-- We want header content here -->
+                <slot name='header'></slot>
+            </header>
+            <main>
+                <!-- We want main content here -->
+                <slot></slot>
+            </main>
+            <footer>
+                <!-- We want footer content here -->
+                <slot name='footer'></slot>
+            </footer>
+        </div>
         `,
   });
 

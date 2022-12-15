@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p>
+        当子组件中只有一个slot时，子组件标签可以当作template使用
+        当存在多个slot时，最好不要把标签当作template使用
+      </p>
+      <current-user>
+        <template v-slot:default="slotProps">
+          {{ slotProps.user.firstName }}
+        </template>
+      </current-user>
+
+      
+      <current-user-and-address>
+        <!-- v-slot:default可以简写为#default-->
+        <template #default="slotProps">
+          {{ slotProps.user.firstName }}
+        </template>
+
+        <!-- 这里的otherProp可以使用es6中的解构函数来实现-->
+        <template v-slot:address="otherProp">
+          {{ otherProp.address.city }}
+        </template>
+
+      </current-user-and-address>
+    </div>
+  </body>
+</html>
+<script>
+  Vue.component("current-user", {
+    data: function () {
+      return {
+        user: {
+          firstName: "coder",
+          lastName: "ladder",
+        },
+        address: {
+          province: "jiangsu",
+          city: "nanjing",
+        },
+      };
+    },
+    template: `
+        <span>
+            <slot v-bind:user="user">
+                {{ user.lastName }}
+            </slot>
+        </span>
+        `,
+  });
+
+  Vue.component("current-user-and-address", {
+    data: function () {
+      return {
+        user: {
+          firstName: "coder",
+          lastName: "ladder",
+        },
+        address: {
+          province: "jiangsu",
+          city: "nanjing",
+        },
+      };
+    },
+    template: `
+        <span>
+            <slot v-bind:user="user">
+                {{ user.lastName }}
+            </slot>
+
+            <slot name='address' v-bind:address="address">
+                {{ address.province }}
+            </slot>
+        </span>
+        `,
+  });
+
+  new Vue({
+    el: "#app",
+  });
+</script>
