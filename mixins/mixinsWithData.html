@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div>
+        <p>对于mixins，相同名字的钩子会被放到一个数组中，所有的钩子都会被调用。mixins的钩子会在组件自身的钩子之前调用。</p>
+        <br>
+        <p style="color: red;">data中相同属性的会被覆盖</p>
+    </div>
+    
+  </body>
+</html>
+
+<script>
+  var mixin = {
+    data: function () {
+      return {
+        message: "hello",
+        foo: "abc",
+      };
+    },
+  };
+
+  new Vue({
+    mixins: [mixin],
+    data: function () {
+      return {
+        message: "goodbye",
+        bar: "def",
+      };
+    },
+    created: function () {
+      console.log(this.$data);
+    },
+  });
+</script>

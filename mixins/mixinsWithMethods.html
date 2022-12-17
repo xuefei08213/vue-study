@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <p>对于methods、components、directives，会将自定义的和mixins中的合并为一个对象</p>
+    <br>
+    <p style="color: red;">组件中的定义优先级高</p>
+  </body>
+</html>
+
+<script>
+  var mixin = {
+    methods: {
+      foo: function () {
+        console.log("foo");
+      },
+      conflicting: function () {
+        console.log("from mixin");
+      },
+    },
+  };
+
+  var vm = new Vue({
+    mixins: [mixin],
+    methods: {
+      bar: function () {
+        console.log("bar");
+      },
+      conflicting: function () {
+        console.log("from self");
+      },
+    },
+  });
+
+  vm.foo(); // => "foo"
+  vm.bar(); // => "bar"
+  vm.conflicting(); // => "from self"
+</script>
