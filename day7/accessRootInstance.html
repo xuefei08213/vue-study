@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div>root节点设置的值{{foo}}</div>
+      <root-instance></root-instance>
+    </div>
+  </body>
+</html>
+<script>
+  Vue.component("root-instance", {
+    template: `
+        <div>
+            <button v-on:click="selfIncrement">子组件从$root中获取值为{{this.$root.foo}}，点击之后值自增1</button>
+            <div v-on:click="click">调用根组件的baz方法{{this.$root.bar}}</div>
+        </div>
+    `,
+    methods: {
+      click: function () {
+        this.$root.baz();
+      },
+      selfIncrement: function () {
+        this.$root.foo++;
+      },
+    },
+  });
+
+  new Vue({
+    el: "#app",
+    data: {
+      foo: 1,
+    },
+    computed: {
+      bar: function () {
+        return "bar";
+      },
+    },
+    methods: {
+      baz: function () {
+        alert("baz");
+      },
+    },
+  });
+</script>
