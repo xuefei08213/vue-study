@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div>$parent不适用于层级很深的情况，需要判断$parent是否有需要的变量或者参数，如果没有还得继续向上找</div>
+    <div id="app">
+      <div>父节点设置的值{{foo}}</div>
+      <child-instance></child-instance>
+    </div>
+  </body>
+</html>
+
+<script>
+  Vue.component("child-instance", {
+    template: `
+          <div>
+              <button v-on:click="selfIncrement">子组件从$parent中获取值为{{this.$parent.foo}}，点击之后值自增1</button>
+              <div v-on:click="click">调用父组件的baz方法{{this.$parent.bar}}</div>
+          </div>
+      `,
+    methods: {
+      click: function () {
+        this.$parent.baz();
+      },
+      selfIncrement: function () {
+        this.$parent.foo++;
+      },
+    },
+  });
+
+  new Vue({
+    el: "#app",
+    data: {
+      foo: 1,
+    },
+    computed: {
+      bar: function () {
+        return "bar";
+      },
+    },
+    methods: {
+      baz: function () {
+        alert("baz");
+      },
+    },
+  });
+</script>
