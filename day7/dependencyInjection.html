@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div>父组件中的foo值为{{foo}}</div>
+      <button v-on:click="foo++">foo自增</button>
+      <child-component> </child-component>
+    </div>
+  </body>
+</html>
+<script>
+  Vue.component("child-component", {
+    inject: ["baz", "foo"],
+    template: `
+        <div>
+            <button v-on:click="selfIncrement">子组件从inject中获取值为{{injectFoo}}，点击之后值自增1</button>
+            <button v-on:click="baz">子组件从inject中获取的方法baz，点击之后调用父组件的baz</button>
+            <child-child-component></child-child-component>
+        </div>
+    `,
+    methods: {
+      selfIncrement: function () {
+        this.injectFoo++;
+      },
+    },
+    // computed: {
+    //   injectFoo: {
+    //     get: function () {
+    //       return this.foo;
+    //     },
+    //     set: function (newValue) {
+    //       this.foo = newValue;
+    //     },
+    //   },
+    // },
+    data: function () {
+      return { childData: "childData", injectFoo: this.foo };
+    },
+    provide: function () {
+      return {
+        childData: this.childData,
+      };
+    },
+  });
+
+  Vue.component("child-child-component", {
+    inject: ["baz", "foo", "childData"],
+    data: function () {
+      return {
+        injectFoo: this.foo,
+      };
+    },
+    template: `
+        <div>
+            <button v-on:click="selfIncrement">子组件从inject中获取值为{{injectFoo}}，点击之后值自增1</button>
+            <span>组件从inject中获取的值为{{childData}}</span>
+            <button v-on:click="baz">子组件从inject中获取的方法baz，点击之后调用父组件的baz</button>
+        </div>
+    `,
+    methods: {
+      selfIncrement: function () {
+        this.injectFoo++;
+      },
+    },
+  });
+
+  new Vue({
+    el: "#app",
+    data: {
+      foo: 1,
+    },
+    computed: {
+      bar: function () {
+        return "bar";
+      },
+    },
+    methods: {
+      baz: function () {
+        alert("baz");
+      },
+    },
+    provide: function () {
+      return {
+        baz: this.baz,
+        foo: this.foo,
+      };
+    },
+  });
+</script>
